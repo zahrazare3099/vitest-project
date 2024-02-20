@@ -14,7 +14,7 @@ export default function AddNote({ todos, setTodos }) {
   };
   return (
     <div>
-      <label htmlFor="todo"></label>
+      <label htmlFor="todo">todo</label>
       <input
         type="text"
         id="todo"
