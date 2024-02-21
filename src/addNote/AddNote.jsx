@@ -21,9 +21,7 @@ export default function AddNote({ todos, setTodos }) {
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
       />
-      <button type="submit" onClick={addTodo}>
-        Add
-      </button>
+      <button onClick={addTodo}>Add</button>
     </div>
   );
 }
