@@ -1,8 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import { test } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { test, expect, describe, vi } from "vitest";
 import App from "./App";
+import NoteList from "./notesList/NoteList";
 
-test("App Test", () => {
-  render(<App />);
-  screen.debug();
+describe("render App", () => {
+  test("App Test", () => {
+    render(<App />);
+    screen.debug();
+  });
 });

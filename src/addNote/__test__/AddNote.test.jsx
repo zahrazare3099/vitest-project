@@ -1,8 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { test, expect, describe, vi } from "vitest";
 import AddNote from "../AddNote";
+import NoteList from "../../notesList/NoteList";
+import App from "../../App";
 
-describe("Add Note", () => {
+describe("CHECK Note Input", () => {
   const callbackTODOS = vi.fn();
   test("#1", () => {
     render(<AddNote todos={[]} setTodos={vi.fn()} />);
@@ -37,5 +39,27 @@ describe("Add Note", () => {
     const button = screen.getByRole("button", { name: /Add/i });
     fireEvent.click(button);
     expect(callbackTODOS).toBeCalled();
+  });
+});
+function addNote(todos) {
+  const labelTitle = screen.getByLabelText("todo");
+  const button = screen.getByRole("button", { name: "Add" });
+  todos.forEach((task) => {
+    fireEvent.change(labelTitle, { target: { value: task.task } });
+    fireEvent.click(button);
+  });
+}
+describe("Add note", () => {
+  test("#1", () => {
+    render(<AddNote todos={[]} setTodos={vi.fn()} />);
+    addNote([{ task: "task one" }]);
+    const inputTitle = screen.getByLabelText("todo");
+    expect(inputTitle.value).toBe("");
+  });
+  test("#2", () => {
+    render(<App />);
+    addNote([{ task: "task one" }, { task: "task one" }, { task: "task one" }]);
+    const divEle = screen.getAllByText("task one");
+    expect(divEle.length).toBe(3);
   });
 });
