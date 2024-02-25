@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { test, expect, describe, vi } from "vitest";
 import AddNote from "../AddNote";
-import NoteList from "../../notesList/NoteList";
 import App from "../../App";
 
 describe("CHECK Note Input", () => {
