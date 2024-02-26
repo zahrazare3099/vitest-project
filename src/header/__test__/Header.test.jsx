@@ -1,6 +1,9 @@
-import { test, expect, describe } from "vitest";
+import { test, expect, describe, vi } from "vitest";
 import Header from "../Header";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, renderHook, screen } from "@testing-library/react";
+import useCounter from "../../hooks/useCounter";
+import { act } from "react-dom/test-utils";
+import userEvent from "@testing-library/user-event";
 
 describe("heading", () => {
   test("header #1", () => {
@@ -56,5 +59,67 @@ describe("heading", () => {
     const h1Emenent = screen.getAllByRole("heading", { level: 2 });
     expect(h1Emenent.length).toBe(1);
     //get All h2 heading [h2]
+  });
+});
+describe("counter", () => {
+  test("#1 check initial value", () => {
+    const { result } = renderHook(useCounter);
+    expect(result.current.count).toBe(0);
+  });
+  test("#2 check pass value", () => {
+    const { result } = renderHook(useCounter, {
+      initialProps: { initialCount: 10 },
+    });
+    expect(result.current.count).toBe(10);
+  });
+  test("#3 check increment", () => {
+    const { result } = renderHook(useCounter);
+    act(() => result.current.increment());
+    expect(result.current.count).toBe(1);
+  });
+  test("#4 check increment", () => {
+    const { result } = renderHook(useCounter);
+    act(() => result.current.decrement());
+    expect(result.current.count).toBe(-1);
+  });
+  test("#5 to Have Been Called", async () => {
+    const user = userEvent.setup();
+    const IncrementHandller = vi.fn();
+    const DecrementHandller = vi.fn();
+
+    render(
+      <Header
+        count={0}
+        increment={IncrementHandller}
+        decrement={DecrementHandller}
+      />
+    );
+    const incBtn = screen.getByRole("button", { name: "inc" });
+    const decBtn = screen.getByRole("button", { name: "dec" });
+    //  fireEvent.click(incBtn)
+    await user.click(incBtn);
+    await user.click(decBtn);
+    expect(IncrementHandller).toHaveBeenCalled();
+    expect(DecrementHandller).toHaveBeenCalled();
+  });
+  test("#6 to Have Been Called one times", async () => {
+    const user = userEvent.setup();
+    const IncrementHandller = vi.fn();
+    const DecrementHandller = vi.fn();
+
+    render(
+      <Header
+        count={0}
+        increment={IncrementHandller}
+        decrement={DecrementHandller}
+      />
+    );
+    const incBtn = screen.getByRole("button", { name: "inc" });
+    const decBtn = screen.getByRole("button", { name: "dec" });
+    //  fireEvent.click(incBtn)
+    await user.click(incBtn);
+    await user.click(decBtn);
+    expect(IncrementHandller).toHaveBeenCalledTimes(1);
+    expect(DecrementHandller).toHaveBeenCalledTimes(1);
   });
 });
