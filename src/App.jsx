@@ -4,6 +4,7 @@ import AddNote from "./addNote/AddNote";
 import Header from "./header/Header";
 import NoteList from "./notesList/NoteList";
 import useCounter from "./hooks/useCounter";
+import UserList from "./userList/UserList";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
@@ -19,6 +20,7 @@ export default function App() {
       />
       <AddNote todos={todos} setTodos={setTodos} />
       <NoteList todos={todos} />
+      <UserList />
     </>
   );
 }
